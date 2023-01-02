@@ -1,0 +1,11 @@
+{
+  "name": "spic3d",
+  "version": "0.0.1",
+  "description": "",
+  "main": "src/spic3d_main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Leevon Levasseur",
+  "license": "ISC"
+}
