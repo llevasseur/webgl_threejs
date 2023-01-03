@@ -20,7 +20,7 @@ class ShadowMesh extends Mesh {
 
 			color: 0x000000,
 			transparent: true,
-			opacity: 0.6,
+			opacity: 0.4,
 			depthWrite: false,
 			stencilWrite: true,
             		stencilFunc: EqualStencilFunc,
@@ -70,6 +70,7 @@ class ShadowMesh extends Mesh {
 		sme[ 7 ] = - lightPosition4D.w * plane.normal.y;
 		sme[ 11 ] = - lightPosition4D.w * plane.normal.z;
 		sme[ 15 ] = dot - lightPosition4D.w * - plane.constant;
+
 
 		this.matrix.multiplyMatrices( _shadowMatrix, this.meshMatrix );
 
