@@ -264,6 +264,7 @@ function init() {
     window.addEventListener( 'resize', onWindowResize );
 
     if (debug == 1) console.log("Test case Init passed!");
+    
 }
 
 function onWindowResize() {
