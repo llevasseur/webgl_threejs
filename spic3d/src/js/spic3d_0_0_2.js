@@ -147,7 +147,7 @@ function init() {
     
     makeGround();
 
-    // Skybox
+    /* // Skybox
     sky = new Sky();
     sky.scale.setScalar( 10000 );
     scene.add( sky );
@@ -162,7 +162,7 @@ function init() {
     pmremGenerator = new THREE.PMREMGenerator( renderer );
 
     if (debug == 1) console.log("Test case Skybox passed!");
-
+ */
     // Sun
 
     function makeSun() {
@@ -277,6 +277,7 @@ function animate() {
         // Evening / Early Morning
 
         scene.remove(sun);
+        scene.remove(ambient);
         scene.add(nightLight);
         scene.background = new THREE.Color("#1a0d00");
         material = new THREE.MeshLambertMaterial({ map: textureObj, color: new THREE.Color("white"), side: THREE.DoubleSide });
@@ -289,15 +290,16 @@ function animate() {
         sun.position.y = position.y;
         sun.position.z = position.z;
         scene.remove(nightLight);
+        scene.add(ambient);
         scene.background = new THREE.Color('#ccffff');
         material = new THREE.MeshLambertMaterial({ color: new THREE.Color("#4d0000"), side: THREE.DoubleSide });
-        sky.material.uniforms[ 'sunPosition' ].value.copy( sun );
+        /* sky.material.uniforms[ 'sunPosition' ].value.copy( sun );
 
         if ( renderTarget !== undefined ) renderTarget.dispose();
 
         renderTarget = pmremGenerator.fromScene( sky );
 
-        scene.environment = renderTarget.texture;
+        scene.environment = renderTarget.texture; */
     }
 
     if (loadedFont != null) {
