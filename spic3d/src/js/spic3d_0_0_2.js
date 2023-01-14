@@ -10,7 +10,8 @@ import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
 import Stats from 'three/addons/libs/stats.module.js';
 import WebGL from 'three/addons/capabilities/WebGL.js';
 import { FontLoader } from 'three/addons/loaders/FontLoader.js';
-import { TextGeometry } from 'three/addons/geometries/TextGeometry.js'
+import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 import { Sky } from 'three/addons/objects/Sky.js';
 import { Vector2, Vector3 } from 'three';
@@ -36,6 +37,7 @@ let heading, theta = -45, delta = 45, lat, lng;
 let xOffset = -1;
 let radius = window.innerWidth / 10;
 let cursorX, cursorY, animation = true;
+let lamp;
 
 let date, hour = 16, minute = 36;
 
@@ -181,12 +183,13 @@ function init() {
     scene.add( ambient );
 
     // Night Light
-    nightLight = new THREE.DirectionalLight(new THREE.Color("grey"), 1);
+    nightLight = new THREE.PointLight(new THREE.Color("grey"), 1);
     nightLight.castShadow = true;
     nightLight.name = ("nightlight");
-    nightLight.position.x = 8;
-    nightLight.position.y = 5;
-    nightLight.position.z = 8;
+    nightLight.position.x = 10;
+    nightLight.position.y = 40;
+    nightLight.position.z = 10;
+    nightLight.rotateOnAxis(new THREE.Vector3(0,1,0), 90);
 
     // Sun Shadow Properties
 
@@ -276,22 +279,24 @@ function animate() {
     if ((hour + minute / 60 > 17.25) || (hour + minute / 60 < 6.50)) {
         // Evening / Early Morning
 
-        scene.remove(sun);
-        scene.remove(ambient);
+        //scene.remove(sun);
+        //scene.remove(ambient);
         scene.add(nightLight);
         scene.background = new THREE.Color("#1a0d00");
         material = new THREE.MeshLambertMaterial({ map: textureObj, color: new THREE.Color("white"), side: THREE.DoubleSide });
 
     } else {
-
+        scene.remove(nightLight);
+        scene.background = new THREE.Color('#ccffff');
+    }
         // Day
-        scene.add(sun);
+       // scene.add(sun);
         sun.position.x = position.x;
         sun.position.y = position.y;
         sun.position.z = position.z;
-        scene.remove(nightLight);
+        
         scene.add(ambient);
-        scene.background = new THREE.Color('#ccffff');
+        
         material = new THREE.MeshLambertMaterial({ color: new THREE.Color("#4d0000"), side: THREE.DoubleSide });
         /* sky.material.uniforms[ 'sunPosition' ].value.copy( sun );
 
@@ -300,7 +305,6 @@ function animate() {
         renderTarget = pmremGenerator.fromScene( sky );
 
         scene.environment = renderTarget.texture; */
-    }
 
     if (loadedFont != null) {
         if (hourMesh != null) {
@@ -345,6 +349,22 @@ function animate() {
     stats.update();
 
 }
+
+loader = new GLTFLoader();
+loader.load('../../../object/AnyConv.com__Lamp.glb', function (gltf) {
+
+	lamp = gltf.scene;
+	scene.add(lamp);
+	lamp.position.set(8, 0.1, 15)
+	lamp.scale.set(2, 2, 2);
+	lamp.receiveShadow = true;
+	lamp.castShadow = true;
+
+}, undefined, function (error) {
+	alert(error);
+	console.error(error);
+
+});
 
 function render() {
 
