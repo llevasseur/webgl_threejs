@@ -12,6 +12,7 @@ import WebGL from 'three/addons/capabilities/WebGL.js';
 import { FontLoader } from 'three/addons/loaders/FontLoader.js';
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 
 import { Sky } from 'three/addons/objects/Sky.js';
 import { Vector2, Vector3 } from 'three';
@@ -98,7 +99,7 @@ function init() {
     // Camera
 
     camera = new THREE.PerspectiveCamera( 55, window.innerWidth / window.innerHeight, 1, 20000 );
-    camera.position.set( -50, 50, -70 );
+    camera.position.set( -500, 500, -700 );
     camera.up = new THREE.Vector3(0, 1, 0);
     //camera.lookAt(new THREE.Vector3(0, 0, 0));
 
@@ -158,14 +159,31 @@ function init() {
     sun.shadow.camera.near = 0.5;    // default;
     sun.shadow.camera.far = 500;     // default;
 
+    // Solar Panel
+    let objLoader = new OBJLoader();
+    objLoader.setPath('../Unit 1 OBJ Files/');
+    objLoader.load('panel_azimuth.obj', function(object) {
+        object.scale.set(0.01, 0.01, 0.01);
+        object.position.z += 12;
+        object.position.x += 2;
+        scene.add(object);
+    });
+    if (debug == 1) console.log("Test case Solar passed!");
+
+    // Stand
+    objLoader.load('stand_azimuth.obj', function(object) {
+        object.scale.set(0.01, 0.01, 0.01);
+        scene.add(object);
+    })
+
 
     // Orbit Controls
 
     controls = new OrbitControls( camera, renderer.domElement );
-    controls.maxPolarAngle = Math.PI * 0.5;
+    //controls.maxPolarAngle = Math.PI * 0.5;
     controls.target.set( 0, 10, 0 );
     controls.minDistance = 4.0;
-    controls.maxDistance = 200.0;
+    controls.maxDistance = 20000.0;
     controls.update();
 
     if (debug == 1) console.log("Test case Orbit Controls passed!");
@@ -244,22 +262,6 @@ function animate() {
     stats.update();
 
 }
-
-let loader = new GLTFLoader();
-loader.load('../../../object/AnyConv.com__Lamp.glb', function (gltf) {
-
-	lamp = gltf.scene;
-	scene.add(lamp);
-	lamp.position.set(9, 0.1, 0)
-	lamp.scale.set(2, 2, 2);
-	lamp.receiveShadow = true;
-	lamp.castShadow = true;
-
-}, undefined, function (error) {
-	alert(error);
-	console.error(error);
-
-});
 
 function render() {
 

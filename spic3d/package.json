@@ -1,11 +1,18 @@
 {
   "name": "spic3d",
-  "version": "0.0.1",
-  "description": "",
+  "version": "0.0.4",
+  "description": "Solar Panel Interface Controller 3D",
   "main": "src/spic3d_main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Leevon Levasseur",
-  "license": "ISC"
+  "license": "ISC",
+  "keywords": [
+    "solar",
+    "gui"
+  ],
+  "dependencies": {
+    "jsdoc": "^4.0.0"
+  }
 }
