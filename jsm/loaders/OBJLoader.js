@@ -771,6 +771,7 @@ class OBJLoader extends Loader {
 
 						material = this.materials.create( sourceMaterial.name );
 
+						console.log("MATERIAL:", material);
 						// mtl etc. loaders probably can't create line materials correctly, copy properties to a line material.
 						if ( isLine && material && ! ( material instanceof LineBasicMaterial ) ) {
 

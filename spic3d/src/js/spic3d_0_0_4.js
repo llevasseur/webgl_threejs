@@ -17,6 +17,9 @@
  * @todo Tidy into production level
 */
 
+/**
+ * Import statements
+ */
 import * as THREE from 'three'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 
@@ -31,8 +34,10 @@ import { OBJLoader } from 'three/addons/loaders/OBJLoader.js'
 import { Sky } from 'three/addons/objects/Sky.js'
 import { Vector2, Vector3 } from 'three'
 
+/** Determines if browser can host webGL 2 */
 if ( WebGL.isWebGL2Available() === false ) {
 
     document.body.appendChild( WebGL.getWebGL2ErrorMessage() )
 
 }
+

@@ -13,6 +13,7 @@ import { FontLoader } from 'three/addons/loaders/FontLoader.js';
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
+import { MTLLoader } from 'three/addons/loaders/MTLLoader.js';
 
 import { Sky } from 'three/addons/objects/Sky.js';
 import { Vector2, Vector3 } from 'three';
@@ -37,7 +38,7 @@ let renderTarget;
 let heading, theta = -45, delta = 45, lat, lng;
 let xOffset = -1;
 let radius = window.innerWidth / 10;
-let cursorX, cursorY, animation = true;
+let cursorX, cursorY, animation = false;
 let lamp;
 
 let date, hour = 16, minute = 36;
@@ -160,21 +161,59 @@ function init() {
     sun.shadow.camera.far = 500;     // default;
 
     // Solar Panel
-    let objLoader = new OBJLoader();
-    objLoader.setPath('../Unit 1 OBJ Files/');
-    objLoader.load('panel_azimuth.obj', function(object) {
-        object.scale.set(0.01, 0.01, 0.01);
-        object.position.z += 12;
-        object.position.x += 2;
+    /* let mtlLoader = new MTLLoader();
+    mtlLoader.setPath('../assets/');
+    mtlLoader.load('panel_azimuth.mtl', (materials) => {
+        materials.preload();
+
+        let objLoader = new OBJLoader();
+        objLoader.setMaterials(materials);
+        objLoader.setPath('../assets/');
+        objLoader.load('panel_azimuth.obj', (object) =>  {
+            scene.add(object);
+        });
+    }); */
+    /*let objLoader = new OBJLoader();
+    objLoader.setPath('../assets/');
+    objLoader.load('tree_default.obj', (object) =>  {
         scene.add(object);
-    });
+    });*/
+    /*var mesh = null;
+
+    var mtlLoader = new MTLLoader();
+    mtlLoader.setPath( "https://threejs.org/examples/models/obj/walt/" );
+    mtlLoader.load( 'WaltHead.mtl', function( materials ) {
+
+        materials.preload();
+
+        var objLoader = new OBJLoader();
+        objLoader.setMaterials( materials );
+        objLoader.setPath( "https://threejs.org/examples/models/obj/walt/" );
+        objLoader.load( 'WaltHead.obj', function ( object ) {
+
+            mesh = object;
+            mesh.position.y = -50;
+            scene.add( mesh );
+
+        } );
+
+    } );*/
+    
     if (debug == 1) console.log("Test case Solar passed!");
 
     // Stand
-    objLoader.load('stand_azimuth.obj', function(object) {
-        object.scale.set(0.01, 0.01, 0.01);
-        scene.add(object);
-    })
+    /*mtlLoader.load('mat_stand_azimuth.mtl', (materials) => {
+        materials.preload();
+
+        let objLoader = new OBJLoader();
+        objLoader.setMaterials(materials);
+        objLoader.setPath('../Unit 1 OBJ Files/');
+        objLoader.load('stand_azimuth.obj', (object) => {
+            object.scale.set(0.01, 0.01, 0.01);
+            scene.add(object);
+        });
+    });*/
+    
 
 
     // Orbit Controls
@@ -217,15 +256,14 @@ function onWindowResize() {
 function animate() {
 
     // Set Date
-    if (date == null) date = new Date();
+    //if (date == null) date = new Date();
+    date = new Date('December 21, 2022 9:00:00')
     hour = date.getHours();
     minute = date.getMinutes();
 
     if (animation == true) {
         minute += 1;
-        console.log(date)
         date = new Date(date.getTime()+60000);
-        console.log(date);
     }
     if (minute > 60) {
         hour += 1;
@@ -252,6 +290,7 @@ function animate() {
         sun.position.x = position.x;
         sun.position.y = position.y;
         sun.position.z = position.z;
+        console.log(sun.position)
         scene.remove(nightLight);
         scene.background = new THREE.Color('#ccffff');
 
